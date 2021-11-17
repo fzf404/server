@@ -1,7 +1,7 @@
 /*
  * @Author: fzf404
  * @Date: 2021-10-10 22:16:54
- * @LastEditTime: 2021-11-17 10:25:20
+ * @LastEditTime: 2021-11-17 11:32:05
  * @Description: 错误处理
  */
 
@@ -15,7 +15,6 @@ if (url_params.has('msg') && url_params.has('code') ) {
   $('#code').text(url_params.get('code'))
 }
 
-// 5s后自动返回首页
-setTimeout(() => {
-  window.location.href = url_params.has('href')?url_params.get('href'):"index.html"
-}, 3000)
+if(url_params.has('href')){
+  $('#return').attr('href',url_params.get('href'))
+}
