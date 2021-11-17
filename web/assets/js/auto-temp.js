@@ -1,7 +1,7 @@
 /*
  * @Author: fzf404
  * @Date: 2021-11-16 23:18:11
- * @LastEditTime: 2021-11-17 11:06:33
+ * @LastEditTime: 2021-11-17 15:23:53
  * @Description: 体温自动填报
  */
 
@@ -39,8 +39,6 @@ $("#submit").click(function () {
 
       // 代码处理
       handle_code(json)
-
-      $('#intro').text('提交完毕...')
 
     }).fail(
       () => handle_fail()

@@ -1,7 +1,7 @@
 /*
  * @Author: fzf404
  * @Date: 2021-11-16 23:19:30
- * @LastEditTime: 2021-11-17 11:36:14
+ * @LastEditTime: 2021-11-17 15:23:35
  * @Description: 通用代码
  */
 
@@ -13,6 +13,7 @@ const handle_code = (json) => {
     window.location.href = `error.html?code=${json.code}&msg=${json.msg}&href=${window.location.href}`
   } else {
     alert("提交成功~请注意查收邮件!")
+    window.location.href = `reward.html`
   }
 }
 
