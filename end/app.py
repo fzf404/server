@@ -1,7 +1,7 @@
 '''
 Author: fzf404
 Date: 2021-11-16 11:15:21
-LastEditTime: 2021-11-17 14:26:34
+LastEditTime: 2021-11-17 14:33:39
 Description: 
 '''
 import csv
@@ -48,7 +48,7 @@ def sylu_temp_new():
         }
 
     # 验证用户是否已存在
-    with open(SYLU_TEMP_PATH, 'r', encoding='utf-8') as f:
+    with open(config.SYLU_TEMP_PATH, 'r', encoding='utf-8') as f:
         data_raw = csv.reader(f)
         for item in data_raw:
             id_tmp = item[0]
