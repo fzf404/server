@@ -1,7 +1,7 @@
 '''
 Author: fzf404
 Date: 2021-11-16 16:12:35
-LastEditTime: 2021-11-17 11:10:27
+LastEditTime: 2021-11-17 13:31:33
 Description: description
 '''
 import yagmail
@@ -9,7 +9,7 @@ import time
 import requests
 import logging
 import random
-from auto_temp import config
+import config
 from jinja2 import FileSystemLoader, Environment
 from lxml import etree
 

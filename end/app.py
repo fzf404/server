@@ -1,16 +1,14 @@
 '''
 Author: fzf404
 Date: 2021-11-16 11:15:21
-LastEditTime: 2021-11-17 11:12:59
+LastEditTime: 2021-11-17 13:30:04
 Description: 
 '''
 import csv
+import utils
 from flask_cors import *
 from flask import Flask, request
-from auto_temp import utils
-from auto_temp.config import SYLU_TEMP_PATH
-
-SYLU_TEMP_PATH = 'auto_temp/'+SYLU_TEMP_PATH
+from config import SYLU_TEMP_PATH
 
 app = Flask("server")
 CORS(app, supports_credentials=True)
