@@ -1,7 +1,7 @@
 '''
 Author: fzf404
 Date: 2021-11-16 16:12:35
-LastEditTime: 2021-11-17 16:04:35
+LastEditTime: 2021-11-17 19:01:34
 Description: description
 '''
 import yagmail
@@ -61,8 +61,11 @@ def send_email(user_name, user_email, message, temperature):
     # 渲染html
     html = template.render(name=user_name,
                            message=message, temp=temperature, now=now)   # 渲染
-    # 发送
-    yag.send(to=user_email, subject="体温填报提醒", contents=html)
+    try:
+        # 发送
+        yag.send(to=user_email, subject="体温填报提醒", contents=html)
+    except:
+        logging.warning(f'{user_name}: 邮件发送失败')
 
 
 '''

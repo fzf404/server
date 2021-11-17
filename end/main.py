@@ -1,7 +1,7 @@
 '''
 Author: fzf404
 Date: 2021-11-16 11:16:16
-LastEditTime: 2021-11-17 10:45:25
+LastEditTime: 2021-11-17 19:01:00
 Description: 发送请求
 '''
 
@@ -12,8 +12,6 @@ import config
 
 # 日志配置
 logging.basicConfig(filename='post.log', level=logging.INFO,
-                    format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
-logging.basicConfig(filename='post.log', level=logging.WARNING,
                     format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
                     
 def main():
