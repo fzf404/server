@@ -1,7 +1,7 @@
 '''
 Author: fzf404
 Date: 2021-11-16 11:15:21
-LastEditTime: 2021-11-17 14:33:39
+LastEditTime: 2021-11-17 14:40:47
 Description: 
 '''
 import csv
@@ -70,7 +70,7 @@ def sylu_temp_new():
     utils.post_temp([student_id, password, user_name, user_email])
 
     # 打开文件并写入, 需指定换行符
-    with open(SYLU_TEMP_PATH, 'a+', encoding='utf-8', newline='') as f:
+    with open(config.SYLU_TEMP_PATH, 'a+', encoding='utf-8', newline='') as f:
         data_write = csv.writer(f)
         data_write.writerow([student_id, password, user_name, user_email])
 
