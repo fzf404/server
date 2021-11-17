@@ -1,7 +1,7 @@
 '''
 Author: fzf404
 Date: 2021-11-16 11:15:21
-LastEditTime: 2021-11-17 14:40:47
+LastEditTime: 2021-11-17 14:49:41
 Description: 
 '''
 import csv
@@ -14,13 +14,7 @@ from flask import Flask, request
 app = Flask("server")
 CORS(app, supports_credentials=True)
 
-logging.basicConfig(filename='success.log', level=logging.INFO,
-                    format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
-logging.basicConfig(filename='warning.log', level=logging.WARNING,
-                    format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
-logging.basicConfig(filename='error.log', level=logging.ERROR,
-                    format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
-logging.basicConfig(filename='panic.log', level=logging.CRITICAL,
+logging.basicConfig(filename='app.log', level=logging.INFO,
                     format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
 
 @app.route('/auto-temp/new', methods=["POST"])
