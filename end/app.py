@@ -1,18 +1,27 @@
 '''
 Author: fzf404
 Date: 2021-11-16 11:15:21
-LastEditTime: 2021-11-17 13:30:04
+LastEditTime: 2021-11-17 14:26:34
 Description: 
 '''
 import csv
 import utils
+import logging
+import config
 from flask_cors import *
 from flask import Flask, request
-from config import SYLU_TEMP_PATH
 
 app = Flask("server")
 CORS(app, supports_credentials=True)
 
+logging.basicConfig(filename='success.log', level=logging.INFO,
+                    format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
+logging.basicConfig(filename='warning.log', level=logging.WARNING,
+                    format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
+logging.basicConfig(filename='error.log', level=logging.ERROR,
+                    format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
+logging.basicConfig(filename='panic.log', level=logging.CRITICAL,
+                    format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
 
 @app.route('/auto-temp/new', methods=["POST"])
 def sylu_temp_new():
