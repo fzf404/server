@@ -5,7 +5,7 @@ LastEditTime: 2021-11-17 14:49:41
 Description: 
 '''
 import csv
-import utils
+import auto_temp
 import logging
 import config
 from flask_cors import *
@@ -54,14 +54,14 @@ def sylu_temp_new():
                 }
 
     # 判断用户名密码是否合法
-    if not utils.user_verfiy(student_id, password):
+    if not auto_temp.user_verfiy(student_id, password):
         return {
             "code": 403,
             "data": {},
             "msg": "学号不正确或密码错误!"
         }
 
-    utils.post_temp([student_id, password, user_name, user_email])
+    auto_temp.post_temp([student_id, password, user_name, user_email])
 
     # 打开文件并写入, 需指定换行符
     with open(config.SYLU_TEMP_PATH, 'a+', encoding='utf-8', newline='') as f:

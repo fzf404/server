@@ -1,7 +1,7 @@
 '''
 Author: fzf404
 Date: 2021-11-16 16:12:35
-LastEditTime: 2021-11-17 13:31:33
+LastEditTime: 2021-11-17 16:04:35
 Description: description
 '''
 import yagmail

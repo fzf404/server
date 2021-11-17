@@ -6,7 +6,7 @@ Description: 发送请求
 '''
 
 import csv
-import utils
+import auto_temp
 import logging
 import config
 
@@ -20,7 +20,7 @@ def main():
     csv_raw = open(config.SYLU_TEMP_PATH, 'r', encoding='utf8')
     csv_list = csv.reader(csv_raw)
     for item in csv_list:
-        status = utils.post_temp(item)
+        status = auto_temp.post_temp(item)
 
 
 if __name__ == '__main__':
