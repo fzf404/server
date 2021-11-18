@@ -2,4 +2,14 @@
   p {
     max-width: 80vw;
   }
+  
+  .placeholder{
+
+    display: none;
+
+  }
+
+  .center{
+    text-align: center;
+  }
 }

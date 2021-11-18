@@ -1,8 +1,8 @@
 '''
 Author: fzf404
 Date: 2021-11-16 16:12:35
-LastEditTime: 2021-11-17 19:01:34
-Description: description
+LastEditTime: 2021-11-17 20:18:48
+Description: 体温自动填报
 '''
 import yagmail
 import time
