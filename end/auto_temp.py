@@ -1,7 +1,7 @@
 '''
 Author: fzf404
 Date: 2021-11-16 16:12:35
-LastEditTime: 2021-11-17 20:18:48
+LastEditTime: 2021-11-19 10:13:43
 Description: 体温自动填报
 '''
 import yagmail
@@ -86,7 +86,7 @@ def post_temp(info):
     sess.post(config.LOGIN_URL, data=login_data)
 
     # 随机温度
-    temperature = random.randint(363, 372)
+    temperature = random.randint(361, 369)
     temp_int = int(temperature/10)
     temp_point = temperature % 10
     temp_str = str(temp_int)+'.'+str(temp_point)

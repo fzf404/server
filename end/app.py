@@ -1,13 +1,14 @@
 '''
 Author: fzf404
 Date: 2021-11-16 11:15:21
-LastEditTime: 2021-11-17 20:18:38
+LastEditTime: 2021-11-19 10:28:59
 Description: 后端
 '''
 import csv
 import auto_temp
 import logging
 import config
+import utils
 from flask_cors import *
 from flask import Flask, request
 
@@ -16,6 +17,7 @@ CORS(app, supports_credentials=True)
 
 logging.basicConfig(filename='app.log', level=logging.INFO,
                     format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
+
 
 @app.route('/auto-temp/new', methods=["POST"])
 def sylu_temp_new():
@@ -39,6 +41,14 @@ def sylu_temp_new():
             "code": 400,
             "data": {},
             "msg": "所有字段不应为空，请输入所有字段哦!"
+        }
+
+    # 验证邮箱
+    if not utils.email_verify(user_email):
+        return {
+            "code": 403,
+            "data": {},
+            "msg": "邮箱不存在!"
         }
 
     # 验证用户是否已存在
