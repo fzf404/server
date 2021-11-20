@@ -2,3 +2,4 @@
 *.pyc
 end/post.log
 *.log
+end/user.csv
