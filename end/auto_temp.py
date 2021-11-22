@@ -1,17 +1,18 @@
 '''
 Author: fzf404
 Date: 2021-11-16 16:12:35
-LastEditTime: 2021-11-19 10:13:43
+LastEditTime: 2021-11-22 16:41:02
 Description: 体温自动填报
 '''
-import yagmail
+import csv
 import time
+import yagmail
 import requests
 import logging
 import random
 import config
-from jinja2 import FileSystemLoader, Environment
 from lxml import etree
+from jinja2 import FileSystemLoader, Environment
 
 '''
 description: 验证用户信息是否正确
@@ -113,3 +114,17 @@ def post_temp(info):
         logging.warning(f'{user_name}: {message}')
         send_email(user_name=user_name, user_email=user_email,
                    message=message, temperature=None)
+
+def main():
+    pass
+
+if __name__ == '__main__':
+    # 日志配置
+    logging.basicConfig(filename=config.AUTO_TEMP_LOG, level=logging.INFO,
+                        format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
+
+    # 遍历用户表
+    with open(config.STU_DATA, 'r', encoding='utf8') as f:
+        csv_list = csv.reader(f)
+        for item in csv_list:
+            post_temp(item)
