@@ -1,7 +1,7 @@
 '''
 Author: fzf404
 Date: 2021-11-16 11:15:21
-LastEditTime: 2021-11-22 16:14:16
+LastEditTime: 2021-11-23 17:00:41
 Description: 后端
 '''
 import csv
@@ -92,7 +92,7 @@ def sylu_temp_new():
 def exam_query_find():
     student_id = request.args.get('student_id')
 
-     # 判断是否为None
+    # 判断是否为None
     if (student_id) is None:
         return {
             "code": 400,
@@ -108,15 +108,17 @@ def exam_query_find():
             "msg": "学号不存在!"
         }
 
-    student_id= student_id[:8]
+    class_id = student_id[:8]
+    mini_id = class_id[:2]+class_id[2:].replace('0', '')
+
     exam_data = []
 
     with open(config.EXAM_DATA, 'r', encoding='utf-8') as f:
         data_raw = csv.reader(f)
         for item in data_raw:
-            if student_id == item[0]:
+            if item[0] in [class_id, student_id, mini_id]:
                 exam_data.append(item)
-                
+
     if len(exam_data) == 0:
         return{
             "code": 404,
