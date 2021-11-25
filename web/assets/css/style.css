@@ -11,6 +11,7 @@
   display: none;
 }
 
-.notice{
+.notice,
+.notice *{
   color: var(--common-red);
 }
