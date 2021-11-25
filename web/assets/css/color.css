@@ -1,3 +1,10 @@
+body {
+  --common-black: #232323;
+  --common-dark: #454545;
+  --common-red: #b41622;
+
+}
+
 .purple:after {
   background-color: rgba(128, 32, 255, 0.4);
 }

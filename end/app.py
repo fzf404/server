@@ -1,7 +1,7 @@
 '''
 Author: fzf404
 Date: 2021-11-16 11:15:21
-LastEditTime: 2021-11-23 17:00:41
+LastEditTime: 2021-11-25 15:07:36
 Description: 后端
 '''
 import csv
@@ -88,8 +88,8 @@ def sylu_temp_new():
     }
 
 
-@app.route('/exam-query/find')
-def exam_query_find():
+@app.route('/exam-info/search')
+def exam_info_search():
     student_id = request.args.get('student_id')
 
     # 判断是否为None
@@ -134,4 +134,4 @@ def exam_query_find():
 
 
 if __name__ == '__main__':
-    app.run('127.0.0.1', port='8080')
+    app.run('0.0.0.0', port='8080')

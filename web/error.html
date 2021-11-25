@@ -1,7 +1,7 @@
 <!--
  * @Author: fzf404
  * @Date: 2021-10-11 13:34:06
- * @LastEditTime: 2021-11-17 11:30:46
+ * @LastEditTime: 2021-11-25 16:48:24
  * @Description: 错误页面
 -->
 
@@ -14,15 +14,20 @@
     <title>fzf404 ｜ 错误</title>
 
     <link rel="stylesheet" href="assets/css/common.css" />
+    <link
+      media="(max-width: 600px)"
+      rel="stylesheet"
+      href="assets/css/mobile.css"
+    />
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
 
   <body>
     <h1>出错啦 🎃</h1>
-    <h2>错误代码：<span id="code">NULL</span> 🔒</h2>
-    <p id="msg">不知道为什么，出错的详情信息也不见了 😭</p>
+    <h2>错误代码: <span id="code">NULL</span> 🔒</h2>
+    <p id="msg">不知道为什么，出错的详情信息也不见了! 😭</p>
     <p>
-      <a class="float-right" id="return" href="index.html">返回</a>
+      <a class="fr" id="return" href="index.html">返回</a>
     </p>
     <script src="assets/js/error.js"></script>
   </body>

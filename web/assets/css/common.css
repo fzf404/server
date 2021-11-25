@@ -1,6 +1,5 @@
-@import url("style.css");
-@import url("mobile.css");
 @import url("color.css");
+@import url("style.css");
 
 body {
   /* 内边距 */
@@ -24,9 +23,11 @@ p {
   line-height: 2em;
 
   /* 最大宽度 */
-  max-width: 660px;
+  max-width: 600px;
+}
 
-  margin: 0.4em 0;
+span {
+  display: inline-block;
 }
 
 a {
@@ -40,14 +41,10 @@ a {
   /* 不展示下划线 */
   text-decoration: none;
 
-  margin: 0.2em 0.8em;
+  margin: 0.2em 1.2em 0.2em 0.4em;
 
   /* 最大宽度 */
-  max-width: 140;
-}
-
-a:first-child {
-  margin-left: 0.4em;
+  max-width: 140px;
 }
 
 /* 伪元素 */
@@ -76,15 +73,12 @@ a:hover:after {
   top: 0%;
 }
 
-span {
-  display: inline-block;
-}
 
 input {
   font-family: monospace;
   font-size: 1.4em;
   padding: 0.2em;
-  max-width: 600px;
+  max-width: 400px;
 }
 
 label {
@@ -101,4 +95,34 @@ label {
   min-width: 60px;
   /* 底部距离 */
   margin: 0.5em 0;
+}
+
+
+table {
+  border-collapse: collapse;
+  text-align: center;
+
+  margin: 1.8em 0;
+}
+
+table td,
+table th {
+  color: var(--common-dark);
+  border: 1px solid #9dc6d2;
+  height: 30px;
+  padding: .4em .2em;
+}
+
+table th {
+  color: var(--common-black);
+  background-color: #b5d4dd;
+  width: 160px;
+}
+
+table tr:nth-child(odd) {
+  background: #eff6f8;
+}
+
+table tr:nth-child(even) {
+  background: #fff;
 }

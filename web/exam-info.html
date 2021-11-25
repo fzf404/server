@@ -1,7 +1,7 @@
 <!--
  * @Author: fzf404
  * @Date: 2021-11-16 22:30:25
- * @LastEditTime: 2021-11-25 12:53:30
+ * @LastEditTime: 2021-11-25 16:42:48
  * @Description: 赞助我们
 -->
 
@@ -11,7 +11,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>fzf404 | 体温自动填报</title>
+    <title>fzf404 | 考试查询</title>
 
     <link rel="stylesheet" href="assets/css/common.css" />
     <link
@@ -27,14 +27,10 @@
 
     <h2>
       <span>『沈阳理工大学』</span>
-      <span>体温自动填报🌡</span>
+      <span id="intro">考试查询🔍</span>
     </h2>
 
-    <p>
-      🍭
-      <span id="intro">每日填报三次</span>
-      🍭
-    </p>
+    <p class="notice">红色为重修, 仅供参考</p>
 
     <form>
       <label>学号</label>
@@ -45,27 +41,27 @@
         autofocus
         required
       />
-      <br />
-
-      <label>密码</label>
-      <input type="text" name="password" placeholder="身份证后六位" required />
-      <br />
-
-      <label>姓名</label>
-      <input type="text" name="user_name" placeholder="如何称呼" required />
-      <br />
-
-      <label>邮箱</label>
-      <input type="text" name="email" placeholder="接受消息的邮箱" required />
     </form>
 
-    <p class="center">
-      <a class="purple" id="submit"> 提交 </a>
+    <p class="center loading">
+      <a class="purple" id="submit"> 查询 </a>
       <a></a>
       <a href="index.html"> 返回 </a>
     </p>
 
+    <table class="load">
+      <tr>
+        <th>科目</th>
+        <th>时间</th>
+        <th>地点</th>
+      </tr>
+    </table>
+
+    <p class="load">
+      <a class="fr" href="index.html">返回</a>
+    </p>
+
     <script src="assets/js/common.js"></script>
-    <script src="assets/js/auto-temp.js"></script>
+    <script src="assets/js/exam-info.js"></script>
   </body>
 </html>

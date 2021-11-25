@@ -1,11 +1,16 @@
-.float-right {
+.fr {
   float: right;
 }
 
-.inline-block {
-  display: inline-block;
+.center{
+  width: 330px;
+  text-align: center;
 }
 
-.min-220 {
-  min-width: 220px;
+.load{
+  display: none;
+}
+
+.notice{
+  color: var(--common-red);
 }
