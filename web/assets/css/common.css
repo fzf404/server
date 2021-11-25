@@ -73,7 +73,6 @@ a:hover:after {
   top: 0%;
 }
 
-
 input {
   font-family: monospace;
   font-size: 1.4em;
@@ -97,7 +96,6 @@ label {
   margin: 0.5em 0;
 }
 
-
 table {
   border-collapse: collapse;
   text-align: center;
@@ -110,7 +108,7 @@ table th {
   color: var(--common-dark);
   border: 1px solid #9dc6d2;
   height: 30px;
-  padding: .4em .2em;
+  padding: 0.4em 0.2em;
 }
 
 table th {

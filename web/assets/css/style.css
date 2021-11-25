@@ -2,16 +2,16 @@
   float: right;
 }
 
-.center{
+.center {
   width: 330px;
   text-align: center;
 }
 
-.load{
+.load {
   display: none;
 }
 
 .notice,
-.notice *{
+.notice * {
   color: var(--common-red);
 }

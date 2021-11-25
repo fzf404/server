@@ -22,7 +22,7 @@ $("#submit").click(function () {
   data = {
     student_id: $('form [name="student_id"]').val(),
   };
-  
+
   $.get(`${base_url}/exam-info/search`, data, (json) => {
     // 代码处理
     if (handle_code(json)) {
@@ -31,7 +31,7 @@ $("#submit").click(function () {
       // 增加信息
       json.data.map((item) => {
         $("table").append(`
-        <tr class="${item[4]==0?"":"notice"}">
+        <tr class="${item[4] == 0 ? "" : "notice"}">
           <td>${item[3]}</td>
           <td>${item[2]}</td>
           <td>${item[1]}</td>
