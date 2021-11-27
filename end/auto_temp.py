@@ -1,7 +1,7 @@
 '''
 Author: fzf404
 Date: 2021-11-16 16:12:35
-LastEditTime: 2021-11-22 16:41:02
+LastEditTime: 2021-11-27 18:23:44
 Description: 体温自动填报
 '''
 import csv
@@ -25,7 +25,7 @@ def user_verfiy(student_id, password):
     # 登录信息
     data = {'txtUid': student_id, 'txtPwd': password}
     # 发送请求
-    res = requests.post(config.LOGIN_URL, data=data)
+    res = requests.post(config.TEMP_LOGIN_URL, data=data)
 
     # 解析html
     content = etree.HTML(res.text)
@@ -84,7 +84,7 @@ def post_temp(info):
     sess = requests.session()
 
     # 发送登录请求
-    sess.post(config.LOGIN_URL, data=login_data)
+    sess.post(config.TEMP_LOGIN_URL, data=login_data)
 
     # 随机温度
     temperature = random.randint(361, 369)
@@ -100,7 +100,7 @@ def post_temp(info):
                  'Temper1': temp_int, 'Temper2': temp_point}
 
     # 发送请求
-    res = sess.post(config.POST_URL, data=temp_data)
+    res = sess.post(config.TEMP_POST_URL, data=temp_data)
 
     # 解析html
     content = etree.HTML(res.text)
@@ -115,16 +115,53 @@ def post_temp(info):
         send_email(user_name=user_name, user_email=user_email,
                    message=message, temperature=None)
 
+def handle_new(student_id,password,user_name,user_email):
+    
+    # 验证用户是否已存在
+    with open(config.TEMP_DATA, 'r', encoding='utf-8') as f:
+        data_raw = csv.reader(f)
+        for item in data_raw:
+            id_tmp = item[0]
+            if student_id == id_tmp:
+                return {
+                    "code": 403,
+                    "data": None,
+                    "msg": "该用户已存在!"
+                }
+
+    # 判断用户名密码是否合法
+    if not user_verfiy(student_id, password):
+        return {
+            "code": 403,
+            "data": None,
+            "msg": "学号不正确或密码错误!"
+        }
+
+    post_temp([student_id, password, user_name, user_email])
+
+    # 打开文件并写入, 需指定换行符
+    with open(config.TEMP_DATA, 'a+', encoding='utf-8', newline='') as f:
+        data_write = csv.writer(f)
+        data_write.writerow([student_id, password, user_name, user_email])
+
+    return {
+        "code": 200,
+        "data": {
+            "student_id": student_id,
+            "user_name": user_name
+        },
+        "msg": "Ok"
+    }
+
 def main():
-    pass
-
-if __name__ == '__main__':
     # 日志配置
-    logging.basicConfig(filename=config.AUTO_TEMP_LOG, level=logging.INFO,
+    logging.basicConfig(filename=config.TEMP_LOG, level=logging.WARNING,
                         format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
-
     # 遍历用户表
-    with open(config.STU_DATA, 'r', encoding='utf8') as f:
+    with open(config.TEMP_DATA, 'r', encoding='utf8') as f:
         csv_list = csv.reader(f)
         for item in csv_list:
             post_temp(item)
+
+if __name__ == '__main__':
+    main()

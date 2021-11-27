@@ -1,8 +1,8 @@
 <!--
  * @Author: fzf404
- * @Date: 2021-11-16 22:30:25
- * @LastEditTime: 2021-11-27 19:14:11
- * @Description: 考试查询
+ * @Date: 2021-11-27 19:13:28
+ * @LastEditTime: 2021-11-27 19:54:42
+ * @Description: 聊天室
 -->
 
 <!DOCTYPE html>
@@ -25,43 +25,29 @@
   <body>
     <h1>欢迎呀 🙌</h1>
 
-    <h2>
-      <span>『沈阳理工大学』</span>
-      <span id="intro">考试查询🔍</span>
-    </h2>
+    <h2>开放网络聊天室 🍻</h2>
 
-    <p class="notice">红色为重修, 仅供参考</p>
+    <div id="message"></div>
 
     <form onsubmit="return false">
-      <label>学号</label>
       <input
         type="text"
-        name="student_id"
-        placeholder="你的学号"
+        name="message"
+        placeholder="在此输入消息"
         autofocus
         required
       />
+
+      <label>
+        <a class="purple" id="submit"> 发送 </a>
+      </label>
     </form>
-
-    <p class="center loading">
-      <a class="purple" id="submit"> 查询 </a>
-      <a></a>
-      <a href="index.html"> 返回 </a>
-    </p>
-
-    <table class="load">
-      <tr>
-        <th>科目</th>
-        <th>时间</th>
-        <th>地点</th>
-      </tr>
-    </table>
 
     <p class="load">
       <a class="fr" href="index.html">返回</a>
     </p>
 
     <script src="assets/js/common.js"></script>
-    <script src="assets/js/exam-info.js"></script>
+    <script src="assets/js/chat.js"></script>
   </body>
 </html>

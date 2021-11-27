@@ -1,22 +1,63 @@
 '''
 Author: fzf404
 Date: 2021-11-16 11:15:21
-LastEditTime: 2021-11-25 15:07:36
+LastEditTime: 2021-11-27 20:47:03
 Description: 后端
 '''
-import csv
 import auto_temp
+import exam_info
 import logging
-import config
 import utils
-from flask_cors import *
+import config
 from flask import Flask, request
+from flask_cors import *
+from flask_sockets import Sockets
+
 
 app = Flask("server")
 CORS(app, supports_credentials=True)
+sockets = Sockets(app)
 
-logging.basicConfig(filename=config.APP_LOG, level=logging.INFO,
+
+chat_logger = utils.logger('chat', config.CHAT_LOG)
+
+logging.basicConfig(filename=config.APP_LOG, level=logging.DEBUG,
                     format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
+
+
+chat_list = []
+
+
+@sockets.route('/chat/connect')
+def chat(ws):
+    ws.send("「请设置用户名」")
+    user_name = ws.receive()
+
+    chat_list.append(ws)
+
+    for user in chat_list:
+        user.send(f'{user_name}: 连接成功')
+
+    while not ws.closed:
+        message = ws.receive()  # 接收消息
+        # 判断是否收到
+        if message is not None:
+            message = f'{user_name}: {message}'
+            chat_logger.info(message)  # 打印日志
+            # 将信息发给全部用户
+            for user in chat_list:
+                user.send(message)
+        else:
+            chat_list.remove(ws)  # 从在线列表中删除
+            message = f'{user_name} - 断开连接'
+            for user in chat_list:
+                user.send(message)
+            chat_logger.info(message)
+
+
+@app.route('/chat/number')
+def chat_number():
+    return str(len(chat_list))
 
 
 @app.route('/auto-temp/new', methods=["POST"])
@@ -51,41 +92,7 @@ def sylu_temp_new():
             "msg": "邮箱不存在!"
         }
 
-    # 验证用户是否已存在
-    with open(config.STU_DATA, 'r', encoding='utf-8') as f:
-        data_raw = csv.reader(f)
-        for item in data_raw:
-            id_tmp = item[0]
-            if student_id == id_tmp:
-                return {
-                    "code": 403,
-                    "data": None,
-                    "msg": "该用户已存在!"
-                }
-
-    # 判断用户名密码是否合法
-    if not auto_temp.user_verfiy(student_id, password):
-        return {
-            "code": 403,
-            "data": None,
-            "msg": "学号不正确或密码错误!"
-        }
-
-    auto_temp.post_temp([student_id, password, user_name, user_email])
-
-    # 打开文件并写入, 需指定换行符
-    with open(config.STU_DATA, 'a+', encoding='utf-8', newline='') as f:
-        data_write = csv.writer(f)
-        data_write.writerow([student_id, password, user_name, user_email])
-
-    return {
-        "code": 200,
-        "data": {
-            "student_id": student_id,
-            "user_name": user_name
-        },
-        "msg": "Ok"
-    }
+    return auto_temp.handle_new(student_id, password, user_name, user_email)
 
 
 @app.route('/exam-info/search')
@@ -108,30 +115,13 @@ def exam_info_search():
             "msg": "学号不存在!"
         }
 
-    class_id = student_id[:8]
-    mini_id = class_id[:2]+class_id[2:].replace('0', '')
-
-    exam_data = []
-
-    with open(config.EXAM_DATA, 'r', encoding='utf-8') as f:
-        data_raw = csv.reader(f)
-        for item in data_raw:
-            if item[0] in [class_id, student_id, mini_id]:
-                exam_data.append(item)
-
-    if len(exam_data) == 0:
-        return{
-            "code": 404,
-            "data": None,
-            "msg": "没有找到考试信息!"
-        }
-
-    return {
-        "code": 200,
-        "data": exam_data,
-        "msg": "Ok"
-    }
+    return exam_info.handle_search(student_id)
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port='8080')
+    from gevent import pywsgi
+    from geventwebsocket.handler import WebSocketHandler
+    server = pywsgi.WSGIServer(('', 8080), app, handler_class=WebSocketHandler)
+    server.serve_forever()
+    # 非启动器
+    # app.run('0.0.0.0', port='8080')
