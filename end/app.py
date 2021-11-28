@@ -1,7 +1,7 @@
 '''
 Author: fzf404
 Date: 2021-11-16 11:15:21
-LastEditTime: 2021-11-27 20:47:03
+LastEditTime: 2021-11-28 20:16:26
 Description: 后端
 '''
 import auto_temp
@@ -10,54 +10,25 @@ import logging
 import utils
 import config
 from flask import Flask, request
-from flask_cors import *
-from flask_sockets import Sockets
-
+from flask_cors import CORS
+from flask_socketio import SocketIO, emit
 
 app = Flask("server")
-CORS(app, supports_credentials=True)
-sockets = Sockets(app)
+
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+CORS(app)
 
 
 chat_logger = utils.logger('chat', config.CHAT_LOG)
 
-logging.basicConfig(filename=config.APP_LOG, level=logging.DEBUG,
-                    format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
+# logging.basicConfig(filename=config.APP_LOG, level=logging.DEBUG,
+# format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
 
 
-chat_list = []
-
-
-@sockets.route('/chat/connect')
-def chat(ws):
-    ws.send("「请设置用户名」")
-    user_name = ws.receive()
-
-    chat_list.append(ws)
-
-    for user in chat_list:
-        user.send(f'{user_name}: 连接成功')
-
-    while not ws.closed:
-        message = ws.receive()  # 接收消息
-        # 判断是否收到
-        if message is not None:
-            message = f'{user_name}: {message}'
-            chat_logger.info(message)  # 打印日志
-            # 将信息发给全部用户
-            for user in chat_list:
-                user.send(message)
-        else:
-            chat_list.remove(ws)  # 从在线列表中删除
-            message = f'{user_name} - 断开连接'
-            for user in chat_list:
-                user.send(message)
-            chat_logger.info(message)
-
-
-@app.route('/chat/number')
-def chat_number():
-    return str(len(chat_list))
+@socketio.on("message")
+def handle_message(message):
+    print("received message: " + message)
 
 
 @app.route('/auto-temp/new', methods=["POST"])
@@ -119,9 +90,5 @@ def exam_info_search():
 
 
 if __name__ == '__main__':
-    from gevent import pywsgi
-    from geventwebsocket.handler import WebSocketHandler
-    server = pywsgi.WSGIServer(('', 8080), app, handler_class=WebSocketHandler)
-    server.serve_forever()
-    # 非启动器
     # app.run('0.0.0.0', port='8080')
+    socketio.run(app, '0.0.0.0', port='8080')

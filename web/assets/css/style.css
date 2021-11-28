@@ -15,3 +15,7 @@
 .notice * {
   color: var(--common-red);
 }
+
+.notice {
+  margin-bottom: 0.6em;
+}

@@ -1,7 +1,6 @@
-flask==1.1.2
+flask
 flask_cors
-flask_sockets
-Werkzeug==1.0.1
+flask_socketio
 
 lxml
 yagmail

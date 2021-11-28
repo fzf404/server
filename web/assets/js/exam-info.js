@@ -1,7 +1,7 @@
 /*
  * @Author: fzf404
  * @Date: 2021-11-16 23:18:11
- * @LastEditTime: 2021-11-25 15:59:46
+ * @LastEditTime: 2021-11-28 15:58:09
  * @Description: 体温自动填报
  */
 
@@ -15,8 +15,7 @@ if (data != null) {
   $('form [name="student_id"]').val(data.student_id);
 }
 
-$("#submit").click(function () {
-
+function submit() {
   $("#intro").text("查询中...");
 
   data = {
@@ -40,4 +39,9 @@ $("#submit").click(function () {
       });
     }
   }).fail(() => handle_fail());
-});
+}
+
+$("#submit").click(submit);
+$('form [name="student_id"]').keydown((e) =>
+  e.keyCode == 13 ? submit() : null
+);

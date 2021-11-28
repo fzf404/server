@@ -6,6 +6,11 @@ body {
   padding: 10vh 10vw;
 }
 
+h1,
+h2 {
+  font-weight: 550;
+}
+
 h1 {
   /* 文字大小 */
   font-size: 3em;
