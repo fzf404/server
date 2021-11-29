@@ -11,24 +11,24 @@ import utils
 import config
 from flask import Flask, request
 from flask_cors import CORS
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO
 
-app = Flask("server")
-
+app = Flask(__name__)
+CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-CORS(app)
+# flask日志
+app_logger = utils.logger('app', config.APP_LOG,level=logging.WARNING)
+app.logger = app_logger
 
-
+# 聊天室日志
 chat_logger = utils.logger('chat', config.CHAT_LOG)
-
-# logging.basicConfig(filename=config.APP_LOG, level=logging.DEBUG,
-# format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
 
 
 @socketio.on("message")
-def handle_message(message):
-    print("received message: " + message)
+def handle_message(msg):
+    chat_logger.info(msg)
+    socketio.send(msg)
 
 
 @app.route('/auto-temp/new', methods=["POST"])

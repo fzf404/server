@@ -9,7 +9,6 @@
 let data = window.localStorage.getItem("info");
 
 if (data != null) {
-  // 解析为object
   data = JSON.parse(data);
   // 设置储存的输入信息
   $('form [name="student_id"]').val(data.student_id);
@@ -17,7 +16,9 @@ if (data != null) {
 
 function submit() {
   $("#intro").text("查询中...");
-
+  // 删除旧数据
+  $("td").remove();
+  // 读取输入信息
   data = {
     student_id: $('form [name="student_id"]').val(),
   };

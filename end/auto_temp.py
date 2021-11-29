@@ -11,8 +11,12 @@ import requests
 import logging
 import random
 import config
+import utils
 from lxml import etree
 from jinja2 import FileSystemLoader, Environment
+
+# 日志配置
+temp_logger = utils.logger('auto-temp', config.TEMP_LOG,level=logging.WARNING)
 
 '''
 description: 验证用户信息是否正确
@@ -66,7 +70,7 @@ def send_email(user_name, user_email, message, temperature):
         # 发送
         yag.send(to=user_email, subject="体温填报提醒", contents=html)
     except:
-        logging.warning(f'{user_name}: 邮件发送失败')
+        temp_logger.warning(f'{user_name}: 邮件发送失败')
 
 
 '''
@@ -107,16 +111,17 @@ def post_temp(info):
     mess = content.xpath('//body/script/text()')
     message = mess[0].split("'")[1]
     if message == "填报成功！":
-        logging.info(f'{user_name}: {message}')
+        temp_logger.info(f'{user_name}: {message}')
         send_email(user_name=user_name, user_email=user_email,
                    message=None, temperature=temp_str)
     else:
-        logging.warning(f'{user_name}: {message}')
+        temp_logger.warning(f'{user_name}: {message}')
         send_email(user_name=user_name, user_email=user_email,
                    message=message, temperature=None)
 
-def handle_new(student_id,password,user_name,user_email):
-    
+
+def handle_new(student_id, password, user_name, user_email):
+
     # 验证用户是否已存在
     with open(config.TEMP_DATA, 'r', encoding='utf-8') as f:
         data_raw = csv.reader(f)
@@ -153,15 +158,14 @@ def handle_new(student_id,password,user_name,user_email):
         "msg": "Ok"
     }
 
+
 def main():
-    # 日志配置
-    logging.basicConfig(filename=config.TEMP_LOG, level=logging.WARNING,
-                        format=config.LOG_FORMAT, datefmt=config.DATE_FORMAT)
     # 遍历用户表
     with open(config.TEMP_DATA, 'r', encoding='utf8') as f:
         csv_list = csv.reader(f)
         for item in csv_list:
             post_temp(item)
+
 
 if __name__ == '__main__':
     main()

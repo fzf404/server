@@ -8,9 +8,11 @@ import config
 import csv
 
 def handle_search(student_id):
+    # 处理学号
     class_id = student_id[:8]
     mini_id = class_id[:2]+class_id[2:].replace('0', '')
 
+    # 结果列表
     exam_data = []
 
     with open(config.EXAM_DATA, 'r', encoding='utf-8') as f:

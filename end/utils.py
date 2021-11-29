@@ -16,16 +16,18 @@ def email_verify(email_address):
     else:
         return False
 
+# 生成日志对象
 def logger(name,filename, level=logging.INFO, fmt=config.LOG_FORMAT, datefmt=config.DATE_FORMAT):
-    logger = logging.getLogger('name')
+    # 获取日志对象
+    logger = logging.getLogger(name)
     logger.setLevel(level)
-
+    # 格式化方式
     formater = logging.Formatter(fmt, datefmt)
-
+    # 新建处理方法
     handler = logging.FileHandler(filename)
     handler.setLevel(level)
     handler.setFormatter(formater)
-
+    # 添加处理方法
     logger.addHandler(handler)
-
+    # 返回logger对象
     return logger

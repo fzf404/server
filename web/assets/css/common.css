@@ -8,6 +8,7 @@ body {
 
 h1,
 h2 {
+  /* 显示emoji */
   font-weight: 550;
 }
 

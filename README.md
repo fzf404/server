@@ -7,10 +7,9 @@
 
 ## 部署
 ```bash
-
 # 后端
 cd end
-pm2 --name=auto-temp start "gunicorn app:app -b 0.0.0.0:8080"
+pm2 --name=auto-temp start "gunicorn -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1 app:app -b 0.0.0.0:8080"
 
 # 定时执行
 crontab -e
