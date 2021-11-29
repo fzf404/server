@@ -6,7 +6,9 @@
  */
 
 // 从浏览器中读取信息
-const user_name = prompt("请设置用户名", "匿名");
+
+let temp = prompt("请设置用户名", "匿名");
+const user_name = temp ? temp : "匿名";
 
 let socket = io(`${base_url}`);
 
