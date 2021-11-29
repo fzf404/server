@@ -43,6 +43,4 @@ function submit() {
 }
 
 $("#submit").click(submit);
-$('form [name="student_id"]').keydown((e) =>
-  e.keyCode == 13 ? submit() : null
-);
+$('form [name="student_id"]').keydown((e) => (e.keyCode == 13 ? submit() : null));

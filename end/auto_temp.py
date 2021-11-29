@@ -16,7 +16,7 @@ from lxml import etree
 from jinja2 import FileSystemLoader, Environment
 
 # 日志配置
-temp_logger = utils.logger('auto-temp', config.TEMP_LOG,level=logging.WARNING)
+temp_logger = utils.logger('auto-temp', config.TEMP_LOG, level=logging.WARNING)
 
 '''
 description: 验证用户信息是否正确

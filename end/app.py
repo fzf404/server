@@ -18,14 +18,30 @@ CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # flask日志
-app_logger = utils.logger('app', config.APP_LOG,level=logging.WARNING)
+app_logger = utils.logger('app', config.APP_LOG, level=logging.WARNING)
 app.logger = app_logger
 
 # 聊天室日志
 chat_logger = utils.logger('chat', config.CHAT_LOG)
 
+user_number = 0
 
-@socketio.on("message")
+
+@socketio.on('connect')
+def test_connect():
+    global user_number
+    user_number += 1
+    socketio.emit('number', user_number)
+
+
+@socketio.on('disconnect')
+def test_disconnect():
+    global user_number
+    user_number -= 1
+    socketio.emit('number', user_number)
+
+
+@socketio.on('message')
 def handle_message(msg):
     chat_logger.info(msg)
     socketio.send(msg)

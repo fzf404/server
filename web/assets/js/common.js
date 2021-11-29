@@ -5,8 +5,8 @@
  * @Description: 通用代码
  */
 
-// const base_url = `http://${document.domain}:8080`;
-const base_url = `http://42.193.122.21:8080`;
+const base_url = `http://${document.domain}:8080`;
+// const base_url = `http://42.193.122.21:8080`;
 const admin_contact = "「QQ: 441535134」";
 
 const handle_code = (json) => {
