@@ -128,12 +128,13 @@ def post_temp(info):
 description: 用户缓存装饰器
 param {*} func
 '''
+
+
 def temp_verify(func):
     def handle_new(*args):
         student_id = args[0]
         # 是否正在处理
         if student_id in user_temp:
-            print('fzf')
             return {
                 "code": 409,
                 "data": None,
@@ -146,15 +147,15 @@ def temp_verify(func):
 
     return handle_new
 
+
 '''
 description: 新增用户
 param {*} func
 '''
+
+
 @temp_verify
 def handle_new(student_id, password, user_name, user_email):
-    import time
-    time.sleep(3)
-
     # 验证用户是否已存在
     with open(config.TEMP_DATA, 'r', encoding='utf-8') as f:
         data_raw = csv.reader(f)
