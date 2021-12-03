@@ -19,7 +19,7 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 # flask日志
 app_logger = utils.logger('app', config.APP_LOG, level=logging.WARNING)
-# app.logger = app_logger
+app.logger = app_logger
 
 # 聊天室日志
 chat_logger = utils.logger('chat', config.CHAT_LOG)

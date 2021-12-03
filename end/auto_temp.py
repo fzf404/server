@@ -76,7 +76,7 @@ def send_email(user_name, user_email, message, temperature):
 
 
 '''
-description: 体温填报 
+description: 发送体温信息 
 param {*} info
 '''
 
@@ -123,9 +123,11 @@ def post_temp(info):
         # send_email(user_name=user_name, user_email=user_email,
         #            message=message, temperature=None)
 
-# 用户是否正在处理
 
-
+'''
+description: 用户缓存装饰器
+param {*} func
+'''
 def temp_verify(func):
     def handle_new(*args):
         student_id = args[0]
@@ -139,12 +141,15 @@ def temp_verify(func):
             }
         user_temp.append(student_id)  # 缓存用户id
         result = func(*args)  # 调用函数
-        user_temp.remove(student_id)  # 删除缓存
+        user_temp.remove(student_id)  # 删·除缓存
         return result
 
     return handle_new
 
-
+'''
+description: 新增用户
+param {*} func
+'''
 @temp_verify
 def handle_new(student_id, password, user_name, user_email):
     import time
