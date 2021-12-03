@@ -38,6 +38,9 @@ const handle_code = (json) => {
       $(".loading").hide();
       $(".load").show();
       return true;
+    case 409:
+      alert(json.msg)
+      return false;
     default:
       window.location.href = `error.html?code=${json.code}&msg=${json.msg}&href=${window.location.href}`;
       return false;

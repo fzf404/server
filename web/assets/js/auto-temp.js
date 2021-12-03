@@ -5,6 +5,8 @@
  * @Description: 体温自动填报
  */
 
+// 锁定
+let lock = false;
 // 从浏览器中读取信息
 let data = window.localStorage.getItem("info");
 
@@ -19,6 +21,13 @@ if (data != null) {
 }
 
 $("#submit").click(function () {
+  // 是否正在提交
+  if (lock) {
+    alert("正在提交中, 请耐心等候...");
+    return false;
+  }
+  // 加锁
+  lock = true;
   $("#intro").text("提交中...");
 
   // 转换为 object
@@ -33,6 +42,8 @@ $("#submit").click(function () {
   window.localStorage.setItem("info", JSON.stringify(data));
 
   $.post(`${base_url}/auto-temp/new`, data, (json) => {
+    // 解锁
+    lock = false;
     // 代码处理
     if (handle_code(json)) {
       // 成功处理

@@ -17,6 +17,8 @@ from jinja2 import FileSystemLoader, Environment
 
 # 日志配置
 temp_logger = utils.logger('auto-temp', config.TEMP_LOG, level=logging.WARNING)
+# 缓存
+user_temp = []
 
 '''
 description: 验证用户信息是否正确
@@ -112,15 +114,41 @@ def post_temp(info):
     message = mess[0].split("'")[1]
     if message == "填报成功！":
         temp_logger.info(f'{user_name}: {message}')
-        send_email(user_name=user_name, user_email=user_email,
-                   message=None, temperature=temp_str)
+        # 暂停邮件发送
+        # send_email(user_name=user_name, user_email=user_email,
+        #            message=None, temperature=temp_str)
     else:
         temp_logger.warning(f'{user_name}: {message}')
-        send_email(user_name=user_name, user_email=user_email,
-                   message=message, temperature=None)
+        # 暂停邮件发送
+        # send_email(user_name=user_name, user_email=user_email,
+        #            message=message, temperature=None)
+
+# 用户是否正在处理
 
 
+def temp_verify(func):
+    def handle_new(*args):
+        student_id = args[0]
+        # 是否正在处理
+        if student_id in user_temp:
+            print('fzf')
+            return {
+                "code": 409,
+                "data": None,
+                "msg": "正在处理中, 请不要重复提交!"
+            }
+        user_temp.append(student_id)  # 缓存用户id
+        result = func(*args)  # 调用函数
+        user_temp.remove(student_id)  # 删除缓存
+        return result
+
+    return handle_new
+
+
+@temp_verify
 def handle_new(student_id, password, user_name, user_email):
+    import time
+    time.sleep(3)
 
     # 验证用户是否已存在
     with open(config.TEMP_DATA, 'r', encoding='utf-8') as f:
