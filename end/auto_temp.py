@@ -81,7 +81,7 @@ param {*} info
 '''
 
 
-def post_temp(info):
+def post_temp(info, new=False):
     student_id, password, user_name, user_email = info
     # 登录信息
     login_data = {'txtUid': student_id, 'txtPwd': password}
@@ -115,13 +115,15 @@ def post_temp(info):
     if message == "填报成功！":
         temp_logger.info(f'{user_name}: {message}')
         # 暂停邮件发送
-        # send_email(user_name=user_name, user_email=user_email,
-        #            message=None, temperature=temp_str)
+        if new:
+            send_email(user_name=user_name, user_email=user_email,
+                    message=None, temperature=temp_str)
     else:
         temp_logger.warning(f'{user_name}: {message}')
         # 暂停邮件发送
-        # send_email(user_name=user_name, user_email=user_email,
-        #            message=message, temperature=None)
+        if new:
+            send_email(user_name=user_name, user_email=user_email,
+                    message=message, temperature=None)
 
 
 '''
@@ -176,7 +178,7 @@ def handle_new(student_id, password, user_name, user_email):
             "msg": "学号不正确或密码错误!"
         }
 
-    post_temp([student_id, password, user_name, user_email])
+    post_temp([student_id, password, user_name, user_email], new=True)
 
     # 打开文件并写入, 需指定换行符
     with open(config.TEMP_DATA, 'a+', encoding='utf-8', newline='') as f:
