@@ -82,6 +82,31 @@ def sylu_temp_new():
     return auto_temp.handle_new(student_id, password, user_name, user_email)
 
 
+@app.route('/auto-temp/remove', methods=["POST"])
+def sylu_temp_remove():
+    # 获得全部信息
+    student_id = request.form.get('student_id')
+    password = request.form.get('password')
+
+    # 判断是否为None
+    if (student_id and password) is None:
+        return {
+            "code": 400,
+            "data": None,
+            "msg": "所有字段不应为空，请输入所有字段哦!"
+        }
+
+    # 判断是否为空
+    if (len(student_id) and len(password)) == 0:
+        return {
+            "code": 400,
+            "data": None,
+            "msg": "所有字段不应为空，请输入所有字段哦!"
+        }
+
+    return auto_temp.handle_remove(student_id, password)
+
+
 @app.route('/exam-info/search')
 def exam_info_search():
     student_id = request.args.get('student_id')

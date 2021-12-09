@@ -130,7 +130,7 @@ param {*} func
 '''
 
 
-def temp_verify(func):
+def handle_verify(func):
     def handle_new(*args):
         student_id = args[0]
         # 是否正在处理
@@ -154,7 +154,7 @@ param {*} func
 '''
 
 
-@temp_verify
+@handle_verify
 def handle_new(student_id, password, user_name, user_email):
     # 验证用户是否已存在
     with open(config.TEMP_DATA, 'r', encoding='utf-8') as f:
@@ -190,6 +190,46 @@ def handle_new(student_id, password, user_name, user_email):
             "user_name": user_name
         },
         "msg": "Ok"
+    }
+
+@handle_verify
+def handle_remove(student_id, password):
+    # 验证用户是否存在
+    with open(config.TEMP_DATA, 'r', encoding='utf-8') as f:
+        data_raw = csv.reader(f)
+        data = list(data_raw)
+        for item in data:
+            if student_id == item[0] and password == item[1]:
+
+                # 删除该用户
+                data.remove(item)
+
+                # 重新写入
+                with open(config.TEMP_DATA, 'w', encoding='utf-8') as f:
+                    data_write = csv.writer(f)
+                    data_write.writerows(data)
+
+                    # 打印日志
+                    temp_logger.warning(f'{student_id}-{item[2]}: 取消自动填报')
+
+                    # 缓存数据
+                    with open(config.STOP_DATA, 'a', encoding='utf-8', newline='') as f:
+                        data_write = csv.writer(f)
+                        data_write.writerow(item)
+
+                    return {
+                        "code": 200,
+                        "data": {
+                            "student_id": item[0],
+                            "user_name": item[2]
+                        },
+                        "msg": "Ok"
+                    }
+
+    return {
+        "code": 403,
+        "data": None,
+        "msg": "学号不正确或密码错误!"
     }
 
 

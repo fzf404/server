@@ -21,6 +21,7 @@ EMAIL_HOST = 'smtp.163.com'
 # 数据文件
 DATA_PATH = 'data/'
 TEMP_DATA = DATA_PATH + 'auto-temp.csv'
+STOP_DATA = DATA_PATH + 'stop-temp.csv'
 EXAM_DATA = DATA_PATH + 'exam-info.csv'
 
 # 日志
