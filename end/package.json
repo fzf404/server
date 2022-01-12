@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "moment": "^2.29.1",
+    "papaparse": "^5.3.1",
+    "puppeteer": "^13.0.1",
+    "puppeteer-debug": "^2.1.1"
+  }
+}

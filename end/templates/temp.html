@@ -1,0 +1,13 @@
+<p>{{name}} 同学：</p>
+{% if message %}
+<p>体温自动填报失败</p>
+<p>{{message}}</p>
+{% else %}
+<p>体温自动填报成功</p>
+<p>上报温度为：{{temp}}</p>
+{% endif %}
+<p>
+  by <a href="https://www.fzf404.top/">你们的小f</a>
+  <a href="http://server.fzf404.top/#/reward">资助我们</a>
+</p>
+<p>{{now}}</p>

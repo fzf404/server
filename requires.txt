@@ -1,0 +1,9 @@
+flask
+flask_cors
+flask_socketio
+gevent-websocket
+
+lxml
+yagmail
+
+requests
