@@ -15,14 +15,16 @@ const data = fs.readFileSync('data/auto-report.csv', 'utf-8')
 
 const report = async (userInfo) => {
   // 开启浏览器
-  const browser = await puppeteer.launch()
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox'],
+    executablePath: '/usr/bin/chromium-browser',
+  })
   // const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()
   // 用户信息
   const studentId = userInfo[0]
   const password = userInfo[1]
   const userName = userInfo[2]
-
   // 登录
   try {
     await page.goto('http://xg.sylu.edu.cn/SPCP/Web/')

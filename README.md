@@ -1,7 +1,7 @@
 <!--
  * @Author: fzf404
  * @Date: 2021-11-17 12:43:30
- * @LastEditTime: 2022-01-12 17:03:53
+ * @LastEditTime: 2022-01-12 19:48:23
  * @Description: 说明
 -->
 
@@ -90,6 +90,7 @@
   pip3 install -r requires.txt # py 依赖
   cd end
   npm install # node 依赖
+  apt install chromium-browser
   # 运行
   python3 app.py
 
@@ -99,5 +100,5 @@
   # 定时执行
   crontab -e
   0 0 8,13,18 * * cd /opt/server/end && python3 main.py
-  0 0 8 * * cd /opt/server/end && node auto_report.js
+  0 8 * * * cd /opt/server/end && node auto_report.js
   ```
