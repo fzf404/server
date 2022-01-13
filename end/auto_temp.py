@@ -200,6 +200,12 @@ def handle_new(student_id, password, user_name, user_email):
     }
 
 
+"""
+description: 删除用户
+param {*} func
+"""
+
+
 @handle_verify
 def handle_remove(student_id, password):
     # 验证用户是否存在
@@ -218,7 +224,7 @@ def handle_remove(student_id, password):
                     data_write.writerows(data)
 
                     # 打印日志
-                    temp_logger.warning(f"{item[2]}-{student_id}: 取消自动填报")
+                    temp_logger.warning(f"{item[2]}/{student_id}: 取消自动填报")
 
                     # 缓存数据
                     with open(config.STOP_DATA, "a", encoding="utf-8", newline="") as f:

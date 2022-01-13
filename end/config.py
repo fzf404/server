@@ -1,13 +1,14 @@
 '''
 Author: fzf404
 Date: 2021-11-16 11:06:36
-LastEditTime: 2022-01-12 17:13:41
+LastEditTime: 2022-01-13 13:10:34
 Description: 变量配置
 '''
 
 # 基本URL
 LOGIN_URL = 'http://xg.sylu.edu.cn/SPCP/Web/'
 TEMP_POST_URL = 'http://xg.sylu.edu.cn/SPCP/Web/Temperature/StuTemperatureInfo'
+REPORT_POST_URL = 'http://xg.sylu.edu.cn/SPCP/Web/Report/Index'
 
 # 格式化
 LOG_FORMAT = '%(asctime)s - %(levelname)s - %(message)s'

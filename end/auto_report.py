@@ -16,7 +16,8 @@ from lxml import etree
 from jinja2 import FileSystemLoader, Environment
 
 # 日志配置
-report_logger = utils.logger("auto-report", config.REPORT_LOG, level=logging.WARNING)
+report_logger = utils.logger(
+    "auto-report", config.REPORT_LOG, level=logging.WARNING)
 # 缓存
 user_tmp = []
 
@@ -72,6 +73,67 @@ def send_email(user_name, user_email):
         yag.send(to=user_email, subject="填报提醒", contents=html)
     except:
         report_logger.warning(f"{user_name}: 邮件发送失败")
+
+
+"""
+description: 发送健康信息
+param {*} info
+"""
+
+
+def post_report(info):
+    student_id, password, username, email = info
+
+    sess = requests.session()  # 创建会话
+    login_data = {"txtUid": student_id, "txtPwd": password}
+    sess.post('http://xg.sylu.edu.cn/SPCP/Web/', data=login_data)  # 发送登录请求
+    res = sess.get(config.REPORT_POST_URL)  # 信息查询
+
+    content = etree.HTML(res.text)  # 解析 html
+    try:
+        name = content.xpath('//*[@id="Name"]/@value')[0]
+        sex = content.xpath('//*[@id="Sex"]/@value')[0]
+        grade = content.xpath('//*[@id="SpeGrade"]/@value')[0]
+        college = content.xpath('//*[@id="form1"]/div[1]/div[2]/div[5]/div[2]/text()')[
+            0].replace('\r\n', '').replace(' ', '')
+        special = content.xpath('//*[@id="SpecialtyName"]/@value')[0]
+
+        province = content.xpath('//*[@id="FaProvinceName"]/@value')[0]
+        city = content.xpath('//*[@id="FaCityName"]/@value')[0]
+        county = content.xpath('//*[@id="FaCountyName"]/@value')[0]
+        street = content.xpath(
+            '//*[@id="form1"]/div[1]/div[5]/div[2]/input/@value')[0]
+
+        phone = content.xpath('//*[@id="MoveTel"]/@value')[0]
+        studentId = content.xpath('//*[@id="StudentId"]/@value')[0]
+        idCard = content.xpath('//*[@id="IdCard"]/@value')[0]
+    except:
+        report_logger.warning(f"{username}/{student_id}: 填报失败")
+        return
+
+    data = {
+        "StudentId": studentId,
+        "Name": name,
+        "Sex": sex,
+        "SpeType": grade,
+        "CollegeNo": college,
+        "SpeGrade": grade,
+        "SpecialtyName": special,
+        "ClassName":  special,
+        "MoveTel": phone,
+        "Province": province,
+        "City": city,
+        "County": county,
+        "ComeWhere": street,
+        "FaProvince": province,
+        "FaCity": city,
+        "FaCounty": county,
+        "FaComeWhere": street,
+    }
+
+    res = sess.post(config.REPORT_POST_URL, data=data)
+
+    report_logger.warning(f"{username}/{student_id}: 填报成功")
 
 
 """
@@ -135,6 +197,12 @@ def handle_new(student_id, password, user_name, user_email):
     }
 
 
+"""
+description: 删除用户
+param {*} func
+"""
+
+
 @handle_verify
 def handle_remove(student_id, password):
     # 验证用户是否存在
@@ -153,7 +221,7 @@ def handle_remove(student_id, password):
                     data_write.writerows(data)
 
                     # 打印日志
-                    report_logger.warning(f"{item[2]}-{student_id}: 取消自动填报")
+                    report_logger.warning(f"{item[2]}/{student_id}: 取消自动填报")
 
                     # 缓存数据
                     with open(config.STOP_DATA, "a", encoding="utf-8", newline="") as f:
@@ -172,5 +240,13 @@ def handle_remove(student_id, password):
     return {"code": 403, "data": None, "msg": "学号不正确或密码错误!"}
 
 
+def main():
+    # 遍历用户表
+    with open(config.REPORT_DATA, "r", encoding="utf8") as f:
+        csv_list = csv.reader(f)
+        for item in csv_list:
+            post_report(item)
+
+
 if __name__ == "__main__":
-    pass
+    main()
