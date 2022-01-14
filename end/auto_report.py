@@ -86,7 +86,7 @@ def post_report(info):
 
     sess = requests.session()  # 创建会话
     login_data = {"txtUid": student_id, "txtPwd": password}
-    sess.post('http://xg.sylu.edu.cn/SPCP/Web/', data=login_data)  # 发送登录请求
+    sess.post(config.LOGIN_URL, data=login_data)  # 发送登录请求
     res = sess.get(config.REPORT_POST_URL)  # 信息查询
 
     content = etree.HTML(res.text)  # 解析 html
@@ -99,17 +99,22 @@ def post_report(info):
         special = content.xpath('//*[@id="SpecialtyName"]/@value')[0]
 
         province = content.xpath('//*[@id="FaProvinceName"]/@value')[0]
+        if len(province) == 0:
+            province = '读取错误'
         city = content.xpath('//*[@id="FaCityName"]/@value')[0]
+        if len(city) == 0:
+            city = '读取错误'
         county = content.xpath('//*[@id="FaCountyName"]/@value')[0]
+        if len(county) == 0:
+            county = '读取错误'
         street = content.xpath(
             '//*[@id="form1"]/div[1]/div[5]/div[2]/input/@value')[0]
-
         phone = content.xpath('//*[@id="MoveTel"]/@value')[0]
         studentId = content.xpath('//*[@id="StudentId"]/@value')[0]
         idCard = content.xpath('//*[@id="IdCard"]/@value')[0]
     except:
         report_logger.warning(f"{username}/{student_id}: 填报失败")
-        report_logger.warning(res.text)
+        report_logger.warning(content.xpath("//body/script/text()"))
         return
 
     data = {
@@ -129,12 +134,13 @@ def post_report(info):
         "FaProvince": province,
         "FaCity": city,
         "FaCounty": county,
-        "FaComeWhere": street,
+        "FaComeWhere": street
     }
-
     res = sess.post(config.REPORT_POST_URL, data=data)
-    report_logger.warning(f"{username}/{student_id}: 填报成功")
-    report_logger.warning(res.text)
+
+    content = etree.HTML(res.text)
+    report_logger.info(f"{username}/{student_id}: 填报成功")
+    report_logger.info(content.xpath("//body/script/text()"))
 
 
 """
