@@ -109,6 +109,7 @@ def post_report(info):
         idCard = content.xpath('//*[@id="IdCard"]/@value')[0]
     except:
         report_logger.warning(f"{username}/{student_id}: 填报失败")
+        report_logger.warning(res.text)
         return
 
     data = {
@@ -132,8 +133,8 @@ def post_report(info):
     }
 
     res = sess.post(config.REPORT_POST_URL, data=data)
-
     report_logger.warning(f"{username}/{student_id}: 填报成功")
+    report_logger.warning(res.text)
 
 
 """
