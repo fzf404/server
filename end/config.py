@@ -1,7 +1,7 @@
 '''
 Author: fzf404
 Date: 2021-11-16 11:06:36
-LastEditTime: 2022-01-13 13:10:34
+LastEditTime: 2022-01-21 11:55:21
 Description: 变量配置
 '''
 
@@ -9,6 +9,7 @@ Description: 变量配置
 LOGIN_URL = 'http://xg.sylu.edu.cn/SPCP/Web/'
 TEMP_POST_URL = 'http://xg.sylu.edu.cn/SPCP/Web/Temperature/StuTemperatureInfo'
 REPORT_POST_URL = 'http://xg.sylu.edu.cn/SPCP/Web/Report/Index'
+GET_CHPTCHA_URL = 'http://xg.sylu.edu.cn/SPCP/Web/Report/GetLoginVCode'
 
 # 格式化
 LOG_FORMAT = '%(asctime)s - %(levelname)s - %(message)s'

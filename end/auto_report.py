@@ -18,6 +18,7 @@ from jinja2 import FileSystemLoader, Environment
 # 日志配置
 report_logger = utils.logger(
     "auto-report", config.REPORT_LOG, level=logging.WARNING)
+
 # 缓存
 user_tmp = []
 
@@ -26,7 +27,6 @@ description: 验证用户信息是否正确
 param {*} student_id
 param {*} password
 """
-
 
 def user_verfiy(student_id, password):
     # 登录信息
@@ -80,16 +80,19 @@ description: 发送健康信息
 param {*} info
 """
 
-
 def post_report(info):
     student_id, password, username, email = info
-
+    # 登录
     sess = requests.session()  # 创建会话
     login_data = {"txtUid": student_id, "txtPwd": password}
     sess.post(config.LOGIN_URL, data=login_data)  # 发送登录请求
+    # 查询信息
     res = sess.get(config.REPORT_POST_URL)  # 信息查询
-
     content = etree.HTML(res.text)  # 解析 html
+
+    # 获取验证码
+    chptcha_code = utils.chptcha_ocr(sess)
+
     try:
         name = content.xpath('//*[@id="Name"]/@value')[0]
         sex = content.xpath('//*[@id="Sex"]/@value')[0]
@@ -100,13 +103,13 @@ def post_report(info):
 
         province = content.xpath('//*[@id="FaProvinceName"]/@value')[0]
         if len(province) == 0:
-            province = '读取错误'
+            province = '辽宁省'
         city = content.xpath('//*[@id="FaCityName"]/@value')[0]
         if len(city) == 0:
-            city = '读取错误'
+            city = '沈阳市'
         county = content.xpath('//*[@id="FaCountyName"]/@value')[0]
         if len(county) == 0:
-            county = '读取错误'
+            county = '浑南区'
         street = content.xpath(
             '//*[@id="form1"]/div[1]/div[5]/div[2]/input/@value')[0]
         phone = content.xpath('//*[@id="MoveTel"]/@value')[0]
@@ -131,35 +134,65 @@ def post_report(info):
         "City": city,
         "County": county,
         "ComeWhere": street,
-        "ProvinceName": province,
-        "CityName": city,
-        "CountyName": county,
+
         "FaProvince": province,
         "FaCity": city,
         "FaCounty": county,
         "FaComeWhere": street,
-        "FaProvinceName": province,
-        "FaCityName": city,
-        "FaCountyName": county,
+
         "radio_1": "e2f169d0-0778-4e3e-8ebf-64ce5a44f307",
         "radio_2": "c8ecb725-9788-4ed0-b9d2-4be23444ce3e",
+        "text_1": "",
         "radio_3": "a884f81e-f401-451d-9f3d-0526aa886feb",
         "radio_4": "62ad9bed-3201-4607-b845-5e279a0311d0",
         "radio_5": "57722ddd-3093-4978-86da-1213420f36c4",
         "radio_6": "c6bcc8ce-86f1-404c-b7f8-ac583d899c75",
         "radio_7": "12727e9b-cd2f-413e-ae30-36adafd5203f",
         "radio_8": "e0559a52-d3d1-4203-ac9a-d221506a507f",
+        "text_2": "",
         "radio_9": "c16d5a27-5923-43d8-b6a6-d5733803490b",
         "radio_10": "3a5fbe75-7bf4-4b6d-93f1-f561dbbf0ead",
         "radio_11": "3a36a22f-5af7-4b48-a472-7df55a8ba374",
         "radio_12": "8f1dddba-8bfc-4b06-8f9c-44a50d7c5ceb",
+        "text_3": "",
         "radio_13": "51fac408-9d07-4a7a-9375-b1872c4ab0bd",
+        "text_4": "",
+
+        "Other": "",
+
+        "VCcode": chptcha_code,
+        "GetAreaUrl": "/SPCP/Web/Report/GetArea",
+
+        "IdCard": idCard,
+        "ProvinceName": province,
+        "CityName": city,
+        "CountyName": county,
+        "FaProvinceName": province,
+        "FaCityName": city,
+        "FaCountyName": county,
+
+        "radioCount": 13,
+        "checkboxCount": 0,
+        "blackCount": 4,
+
+        "PZData": [{"OptionName": "是", "SelectId": "e2f169d0-0778-4e3e-8ebf-64ce5a44f307", "TitleId": "926853bd-6292-48ef-b554-0ea0cb99b808", "OptionType": "0"}, {"OptionName": "否", "SelectId": "c8ecb725-9788-4ed0-b9d2-4be23444ce3e", "TitleId": "5c2ddaef-1cf4-4995-921c-de1585e71fe1", "OptionType": "0"}, {"OptionName": "否", "SelectId": "a884f81e-f401-451d-9f3d-0526aa886feb", "TitleId": "6f95a926-c6d6-4fa7-9d74-fbcfcd79ec7b", "OptionType": "0"}, {"OptionName": "否", "SelectId": "62ad9bed-3201-4607-b845-5e279a0311d0", "TitleId": "6cd479f3-dd6a-4bab-809a-3abdf28e5a46", "OptionType": "0"}, {"OptionName": "否", "SelectId": "57722ddd-3093-4978-86da-1213420f36c4", "TitleId": "e6f578a6-6a0d-4b17-a18f-f1de3cb81d29", "OptionType": "0"}, {"OptionName": "否", "SelectId": "c6bcc8ce-86f1-404c-b7f8-ac583d899c75", "TitleId": "23dfd17a-84b0-462c-a27d-fbafbe670278", "OptionType": "0"}, {"OptionName": "否", "SelectId": "12727e9b-cd2f-413e-ae30-36adafd5203f", "TitleId": "0428ad6d-0c14-4c38-81fb-dc6928ae6608", "OptionType": "0"}, {"OptionName": "否", "SelectId": "e0559a52-d3d1-4203-ac9a-d221506a507f", "TitleId": "85e00a79-176f-4fcf-8d14-8bb14075d51f", "OptionType": "0"}, {"OptionName": "否", "SelectId": "c16d5a27-5923-43d8-b6a6-d5733803490b", "TitleId": "bd5a0708-79a3-4c92-a978-03aba2dac8a8", "OptionType": "0"}, {"OptionName": "否", "SelectId": "3a5fbe75-7bf4-4b6d-93f1-f561dbbf0ead", "TitleId": "91d7f9a5-aed8-462f-81f5-9d339c3f2d3a", "OptionType": "0"}, {"OptionName": "否", "SelectId": "3a36a22f-5af7-4b48-a472-7df55a8ba374", "TitleId": "025d0800-de7d-45e3-b2b4-c240bec5aa51", "OptionType": "0"}, {"OptionName": "否", "SelectId": "8f1dddba-8bfc-4b06-8f9c-44a50d7c5ceb", "TitleId": "0827f0a0-60eb-4c62-9741-d742bf569ece", "OptionType": "0"}, {"OptionName": "否", "SelectId": "51fac408-9d07-4a7a-9375-b1872c4ab0bd", "TitleId": "7d852786-1eca-4beb-82f2-9b52fd46ad6e", "OptionType": "0"}],
+        "ReSubmiteFlag": "0f958114-2fce-480b-a94e-13f600819c74"
     }
+    # 发送填报信息
     res = sess.post(config.REPORT_POST_URL, data=data)
 
+    # 解析数据
     content = etree.HTML(res.text)
-    report_logger.info(f"{username}/{student_id}: 填报成功")
-    report_logger.info(content.xpath("//body/script/text()"))
+    tip = content.xpath("//body/script/text()")
+
+    # 验证码是否识别成功
+    if content.xpath("//body/script/text()") == ["layer.open({content: '验证码已经过期，请重新输入！', btn: '确定' , yes: function(index){history.back()}});"]:
+        report_logger.warning(f"{username}/{student_id}: 验证码识别错误")
+
+        return post_report(info)
+
+    report_logger.warning(f"{username}/{student_id}: 填报成功")
+    report_logger.warning(tip)
 
 
 """

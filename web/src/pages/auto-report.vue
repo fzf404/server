@@ -4,7 +4,7 @@ import request from '@/utils/request'
 
 // 从 localStorage 中读取信息
 const tmp = localStorage.getItem('info')
-// 提交中wÇ
+// 提交中
 const submiting = ref(false)
 // 用户信息
 const info = reactive(tmp ? JSON.parse(tmp) : {})
@@ -33,7 +33,7 @@ h1 欢迎呀 🙌
 h2
   span 『{{submiting?"提交中...":"沈阳理工大学"}}』
   span 健康情况自动填报 🌡
-p 🍭 每日八点填报, 填报信息与上一次提交相同 🍭
+p 🍭 已针对验证码进行更新，并修复了一些bug 🍭
 div
   label 学号
   input(v-model.lazy='info.student_id' placeholder='你的学号' autofocus)

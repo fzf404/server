@@ -7,3 +7,6 @@ lxml
 yagmail
 
 requests
+
+paddlepaddle
+paddleocr>=2.0.1

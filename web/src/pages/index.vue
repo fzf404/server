@@ -13,6 +13,7 @@ p
   router-link.yellow-green(title='停止体温自动填报', to='stop-temp') 停止体温填报
   router-link.yellow(title='停止体温自动填报', to='stop-report') 停止健康填报
 p
+  a.blue-dark(href="https://github.com/fzf404/server") 开源
   router-link.green(title='沈阳理工大学考试查询', to='exam-info') 考试查询
   router-link.blue(title='匿名聊天室',to='chat') 聊天室
 p

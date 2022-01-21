@@ -27,7 +27,7 @@ chat_logger = utils.logger("chat", config.CHAT_LOG)
 # 用户数量
 user_number = 0
 
-
+# 聊天室
 @socketio.on("connect")
 def test_connect():
     global user_number
@@ -47,7 +47,7 @@ def handle_message(msg):
     chat_logger.info(msg)
     socketio.send(msg)
 
-
+# 新增体温填报用户
 @app.route("/auto-temp/new", methods=["POST"])
 def sylu_temp_new():
     # 获得全部信息
@@ -70,7 +70,7 @@ def sylu_temp_new():
 
     return auto_temp.handle_new(student_id, password, user_name, user_email)
 
-
+# 删除提问填报用户
 @app.route("/auto-temp/remove", methods=["POST"])
 def sylu_temp_remove():
     # 获得全部信息
@@ -87,7 +87,7 @@ def sylu_temp_remove():
 
     return auto_temp.handle_remove(student_id, password)
 
-
+# 新增信息填报用户
 @app.route("/auto-report/new", methods=["POST"])
 def sylu_report_new():
     # 获得全部信息
@@ -110,7 +110,7 @@ def sylu_report_new():
 
     return auto_report.handle_new(student_id, password, user_name, user_email)
 
-
+# 删除信息填报用户
 @app.route("/auto-report/remove", methods=["POST"])
 def sylu_report_remove():
     # 获得全部信息
@@ -127,11 +127,10 @@ def sylu_report_remove():
 
     return auto_report.handle_remove(student_id, password)
 
-
+# 考试查询
 @app.route("/exam-info/search")
 def exam_info_search():
     student_id = request.args.get("student_id")
-    # is_new = request.args.get('new') # 旧版
 
     # 判断是否为None
     if student_id is None:
@@ -140,10 +139,6 @@ def exam_info_search():
     # 判断是否为空
     if (len(student_id)) != 10:
         return {"code": 400, "data": None, "msg": "学号不存在!"}
-
-    # 旧版
-    # if is_new is None:
-    #     return exam_info.handle_old(student_id)
 
     return exam_info.handle_search(student_id)
 
