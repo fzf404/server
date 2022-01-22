@@ -186,7 +186,7 @@ def post_report(info):
     tip = content.xpath("//body/script/text()")
 
     # 验证码是否识别成功
-    if content.xpath("//body/script/text()") == ["layer.open({content: '验证码已经过期，请重新输入！', btn: '确定' , yes: function(index){history.back()}});"]:
+    if content.xpath("//body/script/text()") == ["layer.open({content: '验证码错误，请重新输入！', btn: '确定' , yes: function(index){history.back()}});"]:
         report_logger.warning(f"{username}/{student_id}: 验证码识别错误")
 
         return post_report(info)
