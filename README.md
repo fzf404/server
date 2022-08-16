@@ -11,7 +11,7 @@
 >
 > 使用 Flask + Vue3 开发
 >
-> [网站入口](http://server.fzf404.top/#/)
+> [网站入口](http://server.fzf404.art/#/)
 
 ## 说明
 
