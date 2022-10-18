@@ -1,9 +1,9 @@
-name: SERVER_DEPLOY
+name: gh-pages
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
@@ -15,13 +15,17 @@ jobs:
       - name: Node
         uses: actions/setup-node@v2
         with:
-          node-version: "12"
+          node-version: 16
 
-      - name: Setup & Build
+      - name: Setup
         run: |
           cd ./web
-          yarn install
-          yarn run build
+          yarn
+
+      - name: build
+        run: |
+          cd ./web
+          yarn build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
